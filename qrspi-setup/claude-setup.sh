@@ -5,33 +5,29 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEST_DIR="$(pwd)"
 
-echo "Copying qrspi-setup for Codex from: $SCRIPT_DIR"
-echo "                    to working directory: $DEST_DIR"
+echo "Copying qrspi-setup for Claude from: $SCRIPT_DIR"
+echo "                     to working directory: $DEST_DIR"
 echo ""
 
 source "$SCRIPT_DIR/lib/copy-helpers.sh"
 
-echo "=== AGENTS.md ==="
-copy_file "$SCRIPT_DIR/AGENTS.md" "$DEST_DIR/AGENTS.md"
+echo "=== CLAUDE.md ==="
+copy_file "$SCRIPT_DIR/AGENTS.md" "$DEST_DIR/CLAUDE.md"
 
 echo ""
-echo "=== .agents/skills from commands ==="
-mkdir -p "$DEST_DIR/.agents/skills"
+echo "=== .claude/commands ==="
+mkdir -p "$DEST_DIR/.claude/commands"
 for command_file in "$SCRIPT_DIR/commands"/*.md; do
     [ -e "$command_file" ] || continue
-
-    skill_name="$(basename "$command_file" .md)"
-    skill_dir="$DEST_DIR/.agents/skills/$skill_name"
-    mkdir -p "$skill_dir"
-    copy_file "$command_file" "$skill_dir/SKILL.md"
+    copy_file "$command_file" "$DEST_DIR/.claude/commands/$(basename "$command_file")"
 done
 
 echo ""
-echo "=== .agents/skills from skills ==="
-mkdir -p "$DEST_DIR/.agents/skills"
+echo "=== .claude/skills ==="
+mkdir -p "$DEST_DIR/.claude/skills"
 for skill_dir in "$SCRIPT_DIR/skills"/*; do
     [ -d "$skill_dir" ] || continue
-    copy_dir "$skill_dir" "$DEST_DIR/.agents/skills/$(basename "$skill_dir")"
+    copy_dir "$skill_dir" "$DEST_DIR/.claude/skills/$(basename "$skill_dir")"
 done
 
 echo ""

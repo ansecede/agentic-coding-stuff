@@ -9,39 +9,7 @@ echo "Copying qrspi-setup for OpenCode from: $SCRIPT_DIR"
 echo "                       to working directory: $DEST_DIR"
 echo ""
 
-copy_file() {
-    local src="$1"
-    local dest="$2"
-    local name="$(basename "$dest")"
-
-    if [ -L "$dest" ]; then
-        rm "$dest"
-    elif [ -e "$dest" ]; then
-        echo "  SKIP $name (exists)"
-        return
-    fi
-
-    mkdir -p "$(dirname "$dest")"
-    cp "$src" "$dest"
-    echo "  COPY $name"
-}
-
-copy_dir() {
-    local src="$1"
-    local dest="$2"
-    local name="$(basename "$dest")"
-
-    if [ -L "$dest" ]; then
-        rm "$dest"
-    elif [ -e "$dest" ]; then
-        echo "  SKIP $name (exists)"
-        return
-    fi
-
-    mkdir -p "$(dirname "$dest")"
-    cp -R "$src" "$dest"
-    echo "  COPY $name"
-}
+source "$SCRIPT_DIR/lib/copy-helpers.sh"
 
 echo "=== AGENTS.md ==="
 copy_file "$SCRIPT_DIR/AGENTS.md" "$DEST_DIR/AGENTS.md"
